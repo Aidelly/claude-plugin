@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.Aidelly/aidelly",
+  "description": "AI-powered social media management: create, schedule, approve, and analyze posts across 11 platforms.",
+  "repository": {
+    "url": "https://github.com/Aidelly/claude-plugin",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "websiteUrl": "https://aidelly.ai",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://app.aidelly.ai/api/mcp/public-api"
+    }
+  ]
+}
