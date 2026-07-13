@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
-  "name": "io.github.Aidelly/aidelly",
+  "name": "io.github.wilzer/aidelly",
   "description": "AI social media management: create, schedule, approve, and analyze posts across 11 platforms.",
   "repository": {
     "url": "https://github.com/Aidelly/claude-plugin",
