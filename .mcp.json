@@ -3,14 +3,7 @@
     "aidelly": {
       "url": "https://app.aidelly.ai/api/mcp/public-api",
       "transportType": "http",
-      "description": "Aidelly MCP server for social content automation",
-      "auth": {
-        "type": "headers",
-        "headers": {
-          "Authorization": "Bearer ${AIDELLY_API_KEY}",
-          "x-aidelly-workspace-id": "${AIDELLY_WORKSPACE_ID}"
-        }
-      }
+      "description": "Aidelly MCP server for social content automation"
     }
   }
 }

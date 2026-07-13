@@ -12,6 +12,9 @@ Automate Aidelly social media management directly from Claude Code. Create, sche
 
 ## Installation
 
+> **Sign-in is one click.** The Aidelly MCP server supports OAuth 2.1 with PKCE and dynamic client registration, so Claude walks you through an Aidelly login and consent screen automatically — no API key or workspace ID to copy. (An API-key header remains supported for scripted/headless use.)
+
+
 ### Install via Claude Code Plugin Marketplace
 
 ```bash
