@@ -1,6 +1,7 @@
 {
   "name": "aidelly",
   "owner": { "name": "Aidelly", "url": "https://aidelly.ai" },
+  "description": "Official Aidelly plugin marketplace — social content automation for Claude Code.",
   "plugins": [
     {
       "name": "aidelly",
