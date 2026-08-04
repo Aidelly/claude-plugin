@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "name": "io.github.wilzer/aidelly",
-  "description": "Agent-operated social media management for agencies (www.aidelly.ai): create, schedule, approve, and analyze posts across 11 platforms.",
+  "description": "Agent-operated social media for agencies \u2014 www.aidelly.ai. Post, approve, analyze on 11 networks.",
   "repository": {
     "url": "https://github.com/Aidelly/claude-plugin",
     "source": "github"
