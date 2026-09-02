@@ -1,5 +1,7 @@
 # Aidelly Claude Code Plugin
 
+[![Aidelly/claude-plugin MCP server](https://glama.ai/mcp/servers/Aidelly/claude-plugin/badges/score.svg)](https://glama.ai/mcp/servers/Aidelly/claude-plugin)
+
 Automate Aidelly social media management directly from Claude Code. Create, schedule, and manage posts across all connected platforms with AI-powered MCP tools.
 
 ## Features
@@ -251,11 +253,17 @@ This repository is designed to be published to Claude Code plugin marketplaces. 
 4. Open pull request
 5. Address review feedback
 
-#### 3. Alternative MCP Registries
+#### 3. Listed on
+
+**Glama** – https://glama.ai/mcp/servers/Aidelly/claude-plugin
+
+The badge at the top of this README reflects Glama's live quality score for
+this server.
+
+#### 4. Alternative MCP Registries
 
 **mcp.so** – https://mcp.so
 **PulseMCP** – https://pulsemcp.com
-**Glama** – https://glama.ai
 
 **Submission checklist (each):**
 
