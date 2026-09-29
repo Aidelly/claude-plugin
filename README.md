@@ -14,8 +14,7 @@ Automate Aidelly social media management directly from Claude Code. Create, sche
 
 ## Installation
 
-> **Sign-in is one click.** The Aidelly MCP server supports OAuth 2.1 with PKCE and dynamic client registration, so Claude walks you through an Aidelly login and consent screen automatically — no API key or workspace ID to copy. (An API-key header remains supported for scripted/headless use.)
-
+> **Sign-in is one click.** The Aidelly MCP server supports OAuth 2.1 with PKCE and dynamic client registration. Claude walks you through an Aidelly login and consent screen, so there's no key or workspace ID to copy, and the plugin never reads credentials from your machine.
 
 ### Install via Claude Code Plugin Marketplace
 
@@ -23,7 +22,7 @@ Automate Aidelly social media management directly from Claude Code. Create, sche
 /plugin marketplace add Aidelly/claude-plugin
 ```
 
-Then configure your API key (see [Setup](#setup) below).
+Then sign in to Aidelly (see [Setup](#setup) below).
 
 ### Manual Installation (Development)
 
@@ -39,45 +38,29 @@ cd claude-plugin
 
 ## Setup
 
-### 1. Generate an API Key
+### 1. Sign in
 
-1. Log in to [Aidelly Dashboard](https://app.aidelly.ai)
-2. Go to **Settings → API Keys**
-3. Create a new API key (or use an existing one)
-4. Copy the key
+The first time Claude uses an Aidelly tool, Claude Code asks you to sign in:
 
-### 2. Configure Environment Variables
+1. Run `/mcp` in Claude Code and choose **aidelly → Authenticate** (or start with any Aidelly request).
+2. Your browser opens the Aidelly login and consent screen. Log in and approve access.
+3. Return to Claude Code. The server shows as connected.
 
-Set the following environment variables in your Claude Code environment:
+Signing in needs an Aidelly plan that includes API access. The token is issued to your account and expires; sign in again from `/mcp` when it does.
 
-```bash
-export AIDELLY_API_KEY=your_api_key_here
-export AIDELLY_WORKSPACE_ID=your_workspace_id  # Optional; required if managing multiple workspaces
-```
+### 2. Pick a workspace
 
-**macOS/Linux (shell):**
+If you manage several workspaces, ask Claude to list them (`aidelly_list_workspaces`) and say which one to use. Claude passes the workspace to each tool, so there's nothing to configure.
 
-```bash
-# Add to ~/.zshrc, ~/.bashrc, or equivalent
-echo 'export AIDELLY_API_KEY=sk_...' >> ~/.zshrc
-source ~/.zshrc
-```
-
-**Windows (PowerShell):**
-
-```powershell
-[Environment]::SetEnvironmentVariable('AIDELLY_API_KEY', 'sk_...', 'User')
-```
-
-### 3. Verify Connection
+### 3. Verify the connection
 
 In Claude Code, run:
 
 ```
-Use the MCP server to list accounts or get workspace info.
+List my Aidelly workspaces and connected accounts.
 ```
 
-The plugin should successfully connect and list your Aidelly workspace data.
+Claude should return your workspace data.
 
 ## Usage
 
@@ -113,21 +96,14 @@ Full endpoint reference and examples: [skills/aidelly-social/SKILL.md](./skills/
 
 ### .mcp.json
 
-The plugin wires to Aidelly's MCP server via `.mcp.json`:
+The plugin wires to Aidelly's remote MCP server over streamable HTTP. There are no headers and no environment variables; OAuth handles sign-in:
 
 ```json
 {
   "mcpServers": {
     "aidelly": {
-      "url": "https://app.aidelly.ai/api/mcp/public-api",
-      "transportType": "http",
-      "auth": {
-        "type": "headers",
-        "headers": {
-          "Authorization": "Bearer ${AIDELLY_API_KEY}",
-          "x-aidelly-workspace-id": "${AIDELLY_WORKSPACE_ID}"
-        }
-      }
+      "type": "http",
+      "url": "https://app.aidelly.ai/api/mcp/public-api"
     }
   }
 }
@@ -135,14 +111,17 @@ The plugin wires to Aidelly's MCP server via `.mcp.json`:
 
 ### plugin.json
 
-Metadata for Claude Code plugin marketplace:
+Metadata for the Claude Code plugin directory:
 
 ```json
 {
   "name": "aidelly",
-  "description": "Aidelly social content automation for Claude Code",
-  "author": "Aidelly",
-  "version": "0.1.0"
+  "description": "Aidelly social content automation for Claude Code — create posts, schedule content, check approvals, and pull analytics.",
+  "author": { "name": "Aidelly", "url": "https://aidelly.ai" },
+  "homepage": "https://aidelly.ai",
+  "repository": "https://github.com/Aidelly/claude-plugin",
+  "icon": "./assets/icon.png",
+  "version": "0.2.0"
 }
 ```
 
@@ -150,18 +129,17 @@ Metadata for Claude Code plugin marketplace:
 
 ### "Unauthorized" Error
 
-- Verify `AIDELLY_API_KEY` is set correctly
-- Confirm the API key is active in Aidelly Dashboard
-- Check that the workspace exists
+- Run `/mcp`, choose **aidelly → Authenticate**, and sign in again (the token may have expired)
+- Confirm your Aidelly plan includes API access
 
 ### "Forbidden" Error
 
-- Ensure your API key has access to the workspace
-- If using `AIDELLY_WORKSPACE_ID`, verify it matches a workspace you have access to
+- Make sure the workspace Claude is using is one your Aidelly account can access
+- Ask Claude to list your workspaces and pick the right one
 
 ### Rate Limit Exceeded
 
-- The plugin enforces 120 tool calls per minute per API key
+- The server allows 120 tool calls per minute per signed-in user
 - Retry after a few seconds with exponential backoff
 
 ### Platform-Specific Issues
@@ -176,6 +154,8 @@ Metadata for Claude Code plugin marketplace:
 .claude-plugin/
   └─ plugin.json          # Plugin metadata
 .mcp.json                 # MCP server configuration
+assets/
+  └─ icon.png             # 512×512 listing icon
 skills/
   └─ aidelly-social/
      └─ SKILL.md          # Tool documentation & examples
@@ -185,7 +165,7 @@ skills/
 
 The plugin connects to `https://app.aidelly.ai/api/mcp/public-api` (Aidelly's MCP HTTP endpoint).
 
-**Authentication:** `Authorization: Bearer <API_KEY>` (required)
+**Authentication:** OAuth 2.1 (PKCE + dynamic client registration), discovered from the server's `.well-known/oauth-protected-resource` metadata. Tool calls without a token return `401` with a `WWW-Authenticate` challenge, which starts the sign-in.
 
 **Tools exposed by the server:**
 
@@ -287,16 +267,15 @@ Before submitting to any marketplace:
 jq . .claude-plugin/plugin.json
 jq . .mcp.json
 
-# 2. Verify MCP endpoint connectivity
-curl -H "Authorization: Bearer $AIDELLY_API_KEY" \
-  https://app.aidelly.ai/api/mcp/public-api \
-  -X POST \
-  -d '{"jsonrpc":"2.0","method":"initialize","id":1}' \
-  -H "Content-Type: application/json"
+# 2. Verify the MCP endpoint answers (no token needed for initialize)
+curl -s -X POST https://app.aidelly.ai/api/mcp/public-api \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"initialize","id":1}'
 
-# 3. Test API key setup
-export AIDELLY_API_KEY=test_key
-echo "API key set: $AIDELLY_API_KEY"
+# 3. Verify the OAuth challenge on a tool call (expect HTTP 401 + WWW-Authenticate)
+curl -s -D - -o /dev/null -X POST https://app.aidelly.ai/api/mcp/public-api \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"aidelly_list_workspaces","arguments":{}}}'
 
 # 4. Review skill documentation
 cat skills/aidelly-social/SKILL.md | wc -l  # Should be > 200 lines
@@ -307,6 +286,12 @@ cat skills/aidelly-social/SKILL.md | wc -l  # Should be > 200 lines
 When bumping version in `.claude-plugin/plugin.json` and README:
 
 ```
+## Version 0.2.0
+
+- `.mcp.json` declares `"type": "http"` so Claude Code loads the remote server
+- Sign-in is OAuth only; no credentials are read from the user's machine
+- Adds a 512×512 listing icon
+
 ## Version 0.1.0
 
 **Initial release**
@@ -333,6 +318,6 @@ When bumping version in `.claude-plugin/plugin.json` and README:
 
 ---
 
-**Last updated:** 2026-07-13  
-**Plugin version:** 0.1.0  
+**Last updated:** 2026-09-29  
+**Plugin version:** 0.2.0  
 **MCP protocol version:** 2024-11-05+
