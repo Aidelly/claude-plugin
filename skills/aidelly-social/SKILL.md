@@ -9,17 +9,9 @@ Automate social content workflows in Aidelly via Claude Code. This skill documen
 
 ## Authentication
 
-Set up environment variables before using:
+The MCP server (`https://app.aidelly.ai/api/mcp/public-api`) uses OAuth 2.1. The first time a tool runs, Claude Code asks the user to sign in to Aidelly in the browser (or they can run `/mcp` → **aidelly → Authenticate**). No credentials are read from the user's machine.
 
-```bash
-export AIDELLY_API_KEY=your_api_key_here
-export AIDELLY_WORKSPACE_ID=your_workspace_id  # optional; required if managing multiple workspaces
-```
-
-The MCP server (`https://app.aidelly.ai/api/mcp/public-api`) will use these headers:
-
-- `Authorization: Bearer ${AIDELLY_API_KEY}`
-- `x-aidelly-workspace-id: ${AIDELLY_WORKSPACE_ID}` (if set)
+If the user manages several workspaces, call `aidelly_list_workspaces` first and confirm which one to use, then pass it to each tool.
 
 ## Core Tools
 
@@ -238,7 +230,7 @@ All MCP calls follow standard error responses:
 
 Common errors:
 
-- **401 Unauthorized:** Missing or invalid `AIDELLY_API_KEY`
+- **401 Unauthorized:** Not signed in, or the token expired. Ask the user to run `/mcp` → **aidelly → Authenticate**
 - **403 Forbidden:** Insufficient permissions for workspace/account
 - **422 Unprocessable Entity:** Invalid payload (e.g., text too long for platform)
 - **429 Too Many Requests:** Rate limit exceeded (retry with backoff)
@@ -248,7 +240,7 @@ Common errors:
 
 ## Rate Limits
 
-- **Tool calls:** 120 per minute per API key
+- **Tool calls:** 120 per minute per signed-in user
 - **Batch requests:** 20 maximum per batch
 
 ---
