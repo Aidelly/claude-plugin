@@ -120,8 +120,9 @@ Metadata for the Claude Code plugin directory:
   "author": { "name": "Aidelly", "url": "https://aidelly.ai" },
   "homepage": "https://aidelly.ai",
   "repository": "https://github.com/Aidelly/claude-plugin",
+  "privacyPolicyUrl": "https://www.aidelly.ai/privacy-policy",
   "icon": "./assets/icon.png",
-  "version": "0.2.0"
+  "version": "0.2.1"
 }
 ```
 
@@ -286,6 +287,10 @@ cat skills/aidelly-social/SKILL.md | wc -l  # Should be > 200 lines
 When bumping version in `.claude-plugin/plugin.json` and README:
 
 ```
+## Version 0.2.1
+
+- Adds `privacyPolicyUrl` (https://www.aidelly.ai/privacy-policy) to plugin.json
+
 ## Version 0.2.0
 
 - `.mcp.json` declares `"type": "http"` so Claude Code loads the remote server
@@ -319,5 +324,5 @@ When bumping version in `.claude-plugin/plugin.json` and README:
 ---
 
 **Last updated:** 2026-09-29  
-**Plugin version:** 0.2.0  
+**Plugin version:** 0.2.1  
 **MCP protocol version:** 2024-11-05+
