@@ -87,17 +87,10 @@ List posts awaiting approval in the workspace.
 
 ### 4. Approve or Reject a Post
 
-**Tool:** `aidelly_post_approvals_id_action`
-
-Approve or reject a pending post.
-
-**Parameters:**
-
-- `id` (string, required): Approval ID
-- `action` (string, required): 'approve' or 'reject'
-- `reason` (string, optional): Reason for rejection
-
-**Returns:** Updated approval object with new status
+Approve or reject pending posts in the Aidelly app. The hosted Aidelly MCP
+server does not expose approval actions, so this step happens outside Claude.
+`aidelly_list_pending_approvals` (step 3) shows what is waiting, and
+`aidelly_get_approval_batch` shows one batch of generated content.
 
 ---
 
@@ -171,7 +164,7 @@ Upload an image or video for inclusion in a post.
 1. aidelly_upload_media (fetch image from URL)
 2. aidelly_create_scheduled_post (schedule for tomorrow, approval_required: true)
 3. aidelly_list_pending_approvals (check approval status)
-4. aidelly_post_approvals_id_action (approve when ready)
+4. Approve in the Aidelly app when ready (approval actions are not available over hosted MCP)
 ```
 
 ### Workflow: Multi-Platform Campaign Analytics
