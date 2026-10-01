@@ -122,7 +122,7 @@ Metadata for the Claude Code plugin directory:
   "repository": "https://github.com/Aidelly/claude-plugin",
   "privacyPolicyUrl": "https://www.aidelly.ai/privacy-policy",
   "icon": "./assets/icon.png",
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
 ```
 
@@ -173,7 +173,7 @@ The plugin connects to `https://app.aidelly.ai/api/mcp/public-api` (Aidelly's MC
 - `aidelly_create_post` – Instant post publish
 - `aidelly_create_scheduled_post` – Schedule a post
 - `aidelly_list_pending_approvals` – Check pending approvals
-- `aidelly_post_approvals_id_action` – Approve/reject posts
+- Approving or rejecting posts happens in the Aidelly app; the hosted server does not expose approval actions
 - `aidelly_get_analytics_summary` – Pull engagement metrics
 - `aidelly_get_post` – Get post details
 - `aidelly_upload_media` – Upload image/video
@@ -287,6 +287,11 @@ cat skills/aidelly-social/SKILL.md | wc -l  # Should be > 200 lines
 When bumping version in `.claude-plugin/plugin.json` and README:
 
 ```
+## Version 0.2.2
+
+- Uses the renamed tool IDs (for example `aidelly_create_content_automation`); the old IDs stay callable as hidden aliases
+- The approval workflow approves in the Aidelly app, because the hosted server does not expose approval actions
+
 ## Version 0.2.1
 
 - Adds `privacyPolicyUrl` (https://www.aidelly.ai/privacy-policy) to plugin.json
@@ -323,6 +328,6 @@ When bumping version in `.claude-plugin/plugin.json` and README:
 
 ---
 
-**Last updated:** 2026-09-29  
-**Plugin version:** 0.2.1  
+**Last updated:** 2026-10-01  
+**Plugin version:** 0.2.2  
 **MCP protocol version:** 2024-11-05+

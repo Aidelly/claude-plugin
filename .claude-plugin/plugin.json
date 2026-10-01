@@ -9,5 +9,5 @@
   "repository": "https://github.com/Aidelly/claude-plugin",
   "privacyPolicyUrl": "https://www.aidelly.ai/privacy-policy",
   "icon": "./assets/icon.png",
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
